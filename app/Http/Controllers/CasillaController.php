@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Casilla;
 
+use Barryvdh\DomPDF\Facade as PDF;
+
 class CasillaController extends Controller
 {
     /**
@@ -25,7 +27,12 @@ class CasillaController extends Controller
      */
     public function create()
     {
-        return view('casilla/create');
+        /*return view('casilla/create');*/
+
+        $casillas = Casilla::all();
+        $pdf = PDF::loadView('casilla/list', ['casillas'=>$casillas]);
+        return $pdf->download('archivo.pdf');
+
     }
     /**
      * Store a newly created resource in storage.
@@ -33,6 +40,18 @@ class CasillaController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+    public function generatepdf()
+    {
+        /*
+        
+        */
+        $html = "<div style='text-align:center;'><h1>PDF generado desde etiquetas html</h1>
+            <br><h3>&copy;cardoso.dev</h3> </div>";
+             $pdf = PDF::loadHTML($html);
+        return $pdf->download('archivo.pdf');
+        
+    } 
+
     public function store(Request $request)
     {
         $validacion = $request->validate([

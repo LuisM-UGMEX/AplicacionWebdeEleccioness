@@ -7,6 +7,7 @@ use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\EleccionController;
 use App\Http\Controllers\ImeiautorizadoController;
+use App\Http\Controllers\VotoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,12 @@ Route::resources(['funcionario'=>FuncionarioController::class]);
 Route::resources(['rol'=>RolController::class]);
 Route::resources(['eleccion'=>EleccionController::class]);
 Route::resources(['imeiautorizado'=>ImeiautorizadoController::class]);
+Route::resources(['voto'=>VotoController::class]);
+Route::get('casilla/pdf', 'CasillaController@generatepdf');
+
+#--- Socialite facebook
+Route::namespace('App\Http\Controllers')->group(function () {
+    Route::get('/login','Auth\LoginController@index');
+    Route::get('/login/facebook', 'Auth\LoginController@redirectToFacebookProvider');
+    Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderFacebookCallback');
+});
